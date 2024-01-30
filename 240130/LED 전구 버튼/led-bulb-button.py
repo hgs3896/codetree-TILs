@@ -14,17 +14,17 @@ def get_next_state(s: int): # O(N)
     #         ns |= s & (1 << i)
     # return ns
 
-# @cache
-# def composition(s, rep):
-#     if rep % 2 == 1:
-#         s = get_next_state(s)
-#         rep -= 1
-#     if rep == 0:
-#         return s
-#     rep //= 2
-#     s = composition(s, rep)
-#     s = composition(s, rep)
-#     return s
+@cache
+def composition(s, rep):
+    if rep % 2 == 1:
+        s = get_next_state(s)
+        rep -= 1
+    if rep == 0:
+        return s
+    rep //= 2
+    s = composition(s, rep)
+    s = composition(s, rep)
+    return s
 
 s = composition(s, B)
 for i in range(N):
