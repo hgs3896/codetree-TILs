@@ -15,15 +15,18 @@ def get_next_state(s: int): # O(N)
     # return ns
 
 def composition(s, rep):
-    seq = [s]
+    initial_s = s
+    n = 0
     for i in range(rep):
-        seq.append(get_next_state(seq[-1]))
-        if seq[0] == seq[-1]:
+        n += 1
+        s = get_next_state(s)
+        if initial_s == s:
             break
-    if seq[0] == seq[-1]:
-        rep %= (len(seq) - 1)
-        return seq[rep]
-    return seq[-1]
+    if initial_s == s:
+        rep %= n
+        for i in range(rep):
+            s = get_next_state(s)
+    return s
 
 # @cache
 # def composition(s, rep):
