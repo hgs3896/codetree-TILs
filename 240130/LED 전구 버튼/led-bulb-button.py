@@ -5,13 +5,14 @@ s = sum(int(input()) << (N-1-i) for i in range(N))
 
 @cache
 def get_next_state(s: int): # O(N)
-    ns = 0
-    for i in range(N):
-        if s & (1 << (i+1)%N):
-            ns |= (1 - ((s >> i) & 1)) << i
-        else:
-            ns |= s & (1 << i)
-    return ns
+    return s ^ ((((s & 1) << N) | s) >> 1)
+    # ns = 0
+    # for i in range(N):
+    #     if s & (1 << (i+1)%N):
+    #         ns |= (1 - ((s >> i) & 1)) << i
+    #     else:
+    #         ns |= s & (1 << i)
+    # return ns
 
 @cache
 def composition(s, rep):
