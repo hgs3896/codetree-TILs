@@ -39,6 +39,7 @@ def process():
                 coords[(nr, nc)] = group_idx
     
     count_nearby_edges = lambda r, c: sum((r+dr, c+dc) in coords for dr, dc in zip(DR, DC))
+    has_any_edges = lambda r, c: any((r+dr, c+dc) in coords for dr in range(-1, 2) for dc in range(-1, 2) if (dr, dc) != (0, 0))
     total_outer_edges = 0
     for key in groups:
         r, c = key
@@ -46,15 +47,12 @@ def process():
             nr, nc = r+dr, c+dc
             if (nr, nc) in coords:
                 continue
-            dq.append((nr, nc, 0))
+            dq.append((nr, nc))
             visited[(nr, nc)] = count_nearby_edges(nr, nc)
 
         group_outer_edges = 0
         while dq:
-            r, c, try_count = dq.popleft()
-            
-            if try_count > 3:
-                continue
+            r, c = dq.popleft()
 
             group_outer_edges += visited[(r, c)]
             for dr, dc in zip(DR, DC):
@@ -64,25 +62,11 @@ def process():
                 if (nr, nc) in visited:
                     continue
                 visited[(nr, nc)] = count_nearby_edges(nr, nc)
-                if visited[(nr, nc)] > 0:
-                    dq.append((nr, nc, 0))
-                else:
-                    dq.append((nr, nc, try_count+1))
+                if has_any_edges(nr, nc):
+                    dq.append((nr, nc))
 
         total_outer_edges += group_outer_edges
 
     return total_outer_edges
 
 print(process())
-
-# def print_coords():
-#     min_r = min(coord[0] for coord in coords)
-#     max_r = max(coord[0] for coord in coords)
-#     min_c = min(coord[1] for coord in coords)
-#     max_c = max(coord[1] for coord in coords)
-#     for r in range(min_r-1, max_r+2):
-#         for c in range(min_c-1, max_c+2):
-#             print(chr(ord('A')+coords[(r,c)]) if (r, c) in coords else visited.get((r, c), 'x'), end='')
-#         print()
-
-# print_coords()
