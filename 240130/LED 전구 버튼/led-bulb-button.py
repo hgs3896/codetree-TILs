@@ -14,20 +14,6 @@ def get_next_state(s: int): # O(N)
     #         ns |= s & (1 << i)
     # return ns
 
-def composition(s, rep):
-    initial_s = s
-    n = 0
-    for i in range(rep):
-        n += 1
-        s = get_next_state(s)
-        if initial_s == s:
-            break
-    if initial_s == s:
-        rep %= n
-        for i in range(rep):
-            s = get_next_state(s)
-    return s
-
 # @cache
 # def composition(s, rep):
 #     if rep % 2 == 1:
