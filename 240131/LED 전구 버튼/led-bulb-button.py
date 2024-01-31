@@ -1,6 +1,5 @@
 import sys
 from functools import cache
-from collections import OrderedDict
 
 input = sys.stdin.readline
 N, B = map(int, input().split())
@@ -21,19 +20,19 @@ def get_next_state(s: int): # O(1)
     # return ns
 
 def composition(s: int, rep: int):
-    S = OrderedDict()
+    S = {}
+    arr = []
     for idx in range(rep):
         if s in S:
             break
         S[s] = idx
+        arr.append(s)
         s = get_next_state(s)
     if s not in S:
         return s
-    cycle_length = len(S) - S[s]
+    cycle_length = len(arr) - S[s]
     idx = (rep - S[s]) % cycle_length + S[s]
-    for k, v in S.items():
-        if v == idx:
-            return k
+    return arr[idx]
 
 # @cache
 # def composition(s: int, rep: int):
