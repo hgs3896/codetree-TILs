@@ -1,6 +1,3 @@
-# https://www.codetree.ai/training-field/search/problems/a-grid-that's-a-million-square
-# 1283ms, 63MB
-
 from typing import Tuple, Dict, TypeAlias, Generator
 from collections import deque
 import sys
