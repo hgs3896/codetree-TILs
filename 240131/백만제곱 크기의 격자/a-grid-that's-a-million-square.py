@@ -1,24 +1,51 @@
-from typing import Tuple, Dict, TypeAlias
+# https://www.codetree.ai/training-field/search/problems/a-grid-that's-a-million-square
+# 1283ms, 63MB
+
+from typing import Tuple, Dict, TypeAlias, Generator
 from collections import deque
 import sys
 
 input = sys.stdin.readline
 
 Coordinate: TypeAlias = Tuple[int, int]
+CoordinateGenerator: TypeAlias = Generator[Coordinate, None, None]
 
 N: int = int(input())
 DR: Tuple[int, int, int, int] = (0, 1, 0,-1)
 DC: Tuple[int, int, int, int] = (1, 0,-1, 0)
 
-coords: Dict[Coordinate, bool] = {}
-for _ in range(N):
-    key: Coordinate = tuple(map(int, input().split()))
-    coords[key] = False
+def read_coordinates() -> Dict[Coordinate, bool]:
+    coords: Dict[Coordinate, bool] = {}
+    for _ in range(N):
+        key: Coordinate = tuple(map(int, input().split()))
+        coords[key] = False
+    return coords
 
-def process():
+def process(coords: Dict[Coordinate, bool]):
     dq = deque()
+    visited = set()
+
+    def around(r, c) -> CoordinateGenerator:
+        for dr, dc in zip(DR, DC):
+            nr, nc = r+dr, c+dc
+            if (nr, nc) in coords:
+                continue
+            yield nr, nc
+
+    def exceptCoord(g: CoordinateGenerator) -> CoordinateGenerator:
+        for r, c in g:
+            if (r, c) in coords:
+                continue
+            yield r, c
+
+    def exceptVisited(g: CoordinateGenerator) -> CoordinateGenerator:
+        for r, c in g:
+            if (r, c) in visited:
+                continue
+            yield r, c
 
     # Traverse groups by BFS
+    # O(V+E) = O(V)
     groups = []
     for start in coords:
         if coords[start]:
@@ -41,35 +68,23 @@ def process():
     
     count_nearby_groups = lambda r, c: sum((r+dr, c+dc) in coords for dr, dc in zip(DR, DC))
     has_any_groups = lambda r, c: any((r+dr, c+dc) in coords for dr in range(-1, 2) for dc in range(-1, 2) if (dr, dc) != (0, 0))
-
-    total_outer_edges = 0
-    visited = set()
-    for key in groups:
-        r, c = key
-        for dr, dc in zip(DR, DC):
-            nr, nc = r+dr, c+dc
-            if (nr, nc) in coords:
-                continue
+    
+    # Count outer groups by multi-starting points BFS
+    total_outer_groups = 0
+    for group_coord in groups:
+        for nr, nc in exceptCoord(around(*group_coord)):
             dq.append((nr, nc))
             visited.add((nr, nc))
 
-        group_outer_edges = 0
-        while dq:
-            r, c = dq.popleft()
+    while dq:
+        r, c = dq.popleft()
 
-            group_outer_edges += count_nearby_groups(r, c)
-            for dr, dc in zip(DR, DC):
-                nr, nc = r+dr, c+dc
-                if (nr, nc) in coords:
-                    continue
-                if (nr, nc) in visited:
-                    continue
-                visited.add((nr, nc))
-                if has_any_groups(nr, nc):
-                    dq.append((nr, nc))
+        total_outer_groups += count_nearby_groups(r, c)
+        for nr, nc in exceptVisited(exceptCoord(around(r, c))):
+            visited.add((nr, nc))
+            if has_any_groups(nr, nc):
+                dq.append((nr, nc))
 
-        total_outer_edges += group_outer_edges
+    return total_outer_groups
 
-    return total_outer_edges
-
-print(process())
+print(process(read_coordinates()))
