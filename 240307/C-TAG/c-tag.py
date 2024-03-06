@@ -8,9 +8,9 @@ for i in range(M-2):
             s = set()
             possible = True
             for arr in A:
-                s.add((arr[i], arr[j], arr[k]))
+                s.add(arr[i] + arr[j] + arr[k])
             for arr in B:
-                if (arr[i], arr[j], arr[k]) in s:
+                if arr[i] + arr[j] + arr[k] in s:
                     possible = False
                     break
             if possible:
