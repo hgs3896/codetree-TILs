@@ -15,7 +15,6 @@ for i in range(M-2):
                 if arr[i] + arr[j] + arr[k] in s:
                     possible = False
                     break
-            if possible:
-                cnt += 1
+            cnt += possible
 
 print(cnt)
