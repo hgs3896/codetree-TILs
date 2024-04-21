@@ -1,5 +1,8 @@
+import sys
 from collections import defaultdict, deque
 from heapq import heappush, heappop, heapify
+
+input = sys.stdin.readline
 
 def calculate_costs(s, g):
     d = {s: 0}
