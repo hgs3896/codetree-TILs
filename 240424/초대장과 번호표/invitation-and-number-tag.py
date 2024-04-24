@@ -1,5 +1,9 @@
 # (k-1/k) 초대장 받음 -> 나머지 1명도 받음
 from collections import deque, defaultdict
+import sys
+
+input = sys.stdin.readline
+
 N, G = map(int, input().split())
 members_per_group = {}
 group_per_member = defaultdict(list)
