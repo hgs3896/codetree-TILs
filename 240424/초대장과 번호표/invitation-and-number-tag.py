@@ -30,4 +30,5 @@ while q:
             continue
         removed.add(w)
         q.append(w)
+    del group_per_member[v]
 print(len(removed))
