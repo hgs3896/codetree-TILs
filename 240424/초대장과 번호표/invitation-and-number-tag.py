@@ -10,13 +10,20 @@ for g in range(1, G+1):
         group_per_member[v].append(g)
 
 q = deque([1])
-cnt = 0
+removed = set()
+removed.add(1)
+
 while q:
     v = q.popleft()
-    cnt += 1
     for g in group_per_member[v]:
-        if v in members_per_group[g]:
-            members_per_group[g].remove(v)
-            if len(members_per_group[g]) == 1:
-                q.append(members_per_group[g].__iter__().__next__())
-print(cnt)
+        if v not in members_per_group[g]:
+            continue
+        members_per_group[g].remove(v)
+        if len(members_per_group[g]) != 1:
+            continue
+        w = members_per_group[g].__iter__().__next__()
+        if w in removed:
+            continue
+        removed.add(w)
+        q.append(w)
+print(len(removed))
