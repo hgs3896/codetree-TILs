@@ -19,13 +19,13 @@ def ub(x: int):
         return None
 
 f = {
-    'add': lambda x: s.add(x) if x not in s else None,
+    'add': lambda x: s.add(x),
     'remove': lambda x: s.remove(x),
     'find': lambda x: print(str(x in s).lower()),
     'lower_bound': lambda x: print(lb(x)),
     'upper_bound': lambda x: print(ub(x)),
-    'largest': lambda: print(s[-1] if s else None),
-    'smallest': lambda: print(s[0] if s else None),
+    'largest': lambda: print(s[-1] if len(s) else None),
+    'smallest': lambda: print(s[0] if len(s) else None),
 }
 
 n = int(input())
