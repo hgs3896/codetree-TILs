@@ -12,9 +12,9 @@ for _ in range(T):
             s.add(int(args[1]))
         elif s:
             if args[1] == '1':
-                s.remove(s[-1])
+                s.remove(int(s[-1]))
             else:
-                s.remove(s[0])
+                s.remove(int(s[0]))
     if s:
         print(s[-1], s[0])
     else:
