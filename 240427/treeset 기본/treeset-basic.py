@@ -19,7 +19,7 @@ def ub(x: int):
         return None
 
 f = {
-    'add': lambda x: s.add(x),
+    'add': lambda x: s.add(x) if x not in s else None,
     'remove': lambda x: s.remove(x),
     'find': lambda x: print(str(x in s).lower()),
     'lower_bound': lambda x: print(lb(x)),
