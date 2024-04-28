@@ -4,9 +4,7 @@ from sortedcontainers import SortedSet
 input = sys.stdin.readline
 n, m = map(int, input().split())
 
-arr = SortedSet()
-for _ in range(n):
-    arr.add(tuple(map(int, input().split())))
+arr = SortedSet(tuple(map(int, input().split())) for _ in range(n))
 
 for _ in range(m):
     # (x = x' & y <= y') or x < x'
