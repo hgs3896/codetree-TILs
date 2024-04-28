@@ -1,16 +1,16 @@
+import sys
 from sortedcontainers import SortedSet
 
+input = sys.stdin.readline
 n, m = map(int, input().split())
 
 arr = SortedSet()
 for _ in range(n):
-    x, y = map(int, input().split())
-    arr.add((x, y))
+    arr.add(tuple(map(int, input().split())))
 
 for _ in range(m):
-    x, y = map(int, input().split())
     # (x = x' & y <= y') or x < x'
-    lb = arr.bisect_left((x, y))
+    lb = arr.bisect_left(tuple(map(int, input().split())))
     if lb < len(arr):
         print(*arr[lb])
     else:
