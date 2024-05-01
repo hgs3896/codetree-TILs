@@ -10,4 +10,7 @@ while l < n:
     min_diff = min(min_diff, arr[r] - arr[l])
     while l < r and arr[r] - arr[l] >= m:
         l += 1
-print(min_diff)
+if min_diff < m:
+    print(-1)
+else:
+    print(min_diff)
