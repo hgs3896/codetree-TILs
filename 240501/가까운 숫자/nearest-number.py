@@ -2,7 +2,7 @@ from sortedcontainers import SortedSet
 input()
 s = SortedSet()
 s.add(0)
-min_dist = 100000
+min_dist = 10**9+1
 for x in map(int, input().split()):
     r = s.bisect_right(x)
     dist = x - s[r-1]
