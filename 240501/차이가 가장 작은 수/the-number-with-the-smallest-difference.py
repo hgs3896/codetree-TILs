@@ -1,3 +1,5 @@
+import sys
+input = sys.stdin.readline
 n, m = map(int, input().split())
 arr = sorted(int(input()) for _ in range(n))
 l, r = 0, 0
