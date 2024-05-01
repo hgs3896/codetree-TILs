@@ -5,12 +5,20 @@ min_diff = arr[-1] - arr[0]
 while l < n:
     while r < n and arr[r] - arr[l] < m:
         r += 1
+    # Invariant: r == n or arr[r] - arr[l] >= m:
     if r == n:
         break
-    min_diff = min(min_diff, arr[r] - arr[l])
-    while l < r and arr[r] - arr[l] >= m:
+    # Invariant: arr[r] - arr[l] >= m:
+    while l+1 < r and arr[r] - arr[l+1] >= m:
         l += 1
-if min_diff < m:
-    print(-1)
-else:
+    # Invariant: arr[r] - arr[l] >= m:
+    
+    min_diff = min(min_diff, arr[r] - arr[l])
+    
+    l += 1
+    # Invariant: arr[r] - arr[l] < m:
+
+if min_diff >= m:
     print(min_diff)
+else:
+    print(-1)
