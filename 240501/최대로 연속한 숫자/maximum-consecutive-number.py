@@ -1,21 +1,27 @@
 from sortedcontainers import SortedSet
+from heapq import heappush, heappop
 n, m = map(int, input().split())
 
-removed = SortedSet()
-removed.add((0, n))
-max_length = n+1
+removed_interval = set()
+intervals = SortedSet()
+intervals.add((0, n))
+
+interval_heap = [(-(n-0+1), 0, n)]
 
 for x in map(int, input().split()):
-    idx = removed.bisect_left((x+1, 0)) - 1
+    idx = intervals.bisect_left((x+1, 0)) - 1
     
-    l, r = removed[idx]
-    removed.remove(removed[idx])
+    l, r = intervals[idx]
+    intervals.remove(intervals[idx])
+    removed_interval.add((l, r))
     
     if l <= x-1:
-        removed.add((l, x-1))
+        intervals.add((l, x-1))
+        heappush(interval_heap, (-(x-l), l, x-1))
     if x+1 <= r:
-        removed.add((x+1, r))
+        intervals.add((x+1, r))
+        heappush(interval_heap, (-(r-x), x+1, r))
     
-    if max_length == r-l+1:
-        max_length = max(rr-ll+1 for ll, rr in removed)
-    print(max_length)
+    while interval_heap and (interval_heap[0][1], interval_heap[0][2]) in removed_interval:
+        heappop(interval_heap)
+    print(-interval_heap[0][0])
